@@ -40,6 +40,10 @@ gpcommit() {
 }
 
 gpprettytime() {
+	[ -z "$1" ] && {
+		echo "0:00"
+		return
+	}
 	HOURS="$(($1 / 60))"
 	MINUTES="$(($1 % 60))"
 	# TODO Round (down) to even half hours?

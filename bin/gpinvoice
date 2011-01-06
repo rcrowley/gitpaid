@@ -31,7 +31,8 @@ date
 echo "from $BRANCH branch of $REPO"
 echo
 echo "## Work log"
-git log --reverse --pretty=format:%H\ %cn%n | while read COMMIT COMMITTER
+git rev-list --reverse --format%H\ %cn%n "$BRANCH" 2>/dev/null \
+	| while read COMMIT COMMITTER
 do
 	[ -z "$COMMIT" ] && continue
 
