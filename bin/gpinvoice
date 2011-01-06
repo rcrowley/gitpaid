@@ -1,0 +1,72 @@
+#!/bin/sh
+
+set -e
+
+#/ Usage: gpinvoice [-b <branch>] [-r <repo>]
+#/   -b branch name (default master)
+#/   -r repository path (default ~/.gitpaid)
+#/   -h show this help message
+
+. "$(dirname "$(dirname "$0")")/lib/gp.sh"
+
+while getopts b:r:h NAME
+do
+	case "$NAME" in
+		b) BRANCH="$OPTARG";;
+		r) REPO="$OPTARG";;
+		h)
+			grep "^#/" <"$0" | cut -c4- >&2
+			exit 0;;
+		*)
+			grep "^#/" <"$0" | head -n1 | cut -c4- >&2
+			exit 1;;
+	esac
+done
+
+gpinit
+
+echo "# Invoice"
+echo
+date
+echo "from $BRANCH branch of $REPO"
+echo
+echo "## Work log"
+git log --reverse --pretty=format:%H\ %cn%n | while read COMMIT COMMITTER
+do
+	[ -z "$COMMIT" ] && continue
+
+	[ -z "$BEGIN" -a "$COMMITTER" = "gpbegin" ] && {
+		echo
+		echo "Began: $(git show "$COMMIT" --pretty=format:%aD)"
+		BEGIN="$(git show "$COMMIT" --pretty=format:%at)"
+	}
+
+	SUBJECT="$(git show "$COMMIT" --pretty=format:%s)"
+	BODY="$(git show "$COMMIT" --pretty=format:%b)"
+	[ -n "$SUBJECT" -o -n "$BODY" ] && echo
+	[ -n "$SUBJECT" ] && echo "$SUBJECT" | xargs echo ">"
+	[ -n "$SUBJECT" -a -n "$BODY" ] && echo ">"
+	[ -n "$BODY" ] && echo "$BODY" | xargs echo ">"
+
+	[ -n "$BEGIN" -a "$COMMITTER" = "gpend" ] && {
+		echo
+		echo "Ended: $(git show "$COMMIT" --pretty=format:%aD)"
+		MINUTES="$(((
+			$(git show "$COMMIT" --pretty=format:%at) - $BEGIN
+		) / 60))"
+		echo "$MINUTES" >&3
+		# TODO Convert to hours and minutes.
+		echo "Billable minutes: $MINUTES"
+		BEGIN=
+	}
+
+# Sum billable minutes comine from the loop process on file descriptor 3.
+done 3>minutes
+MINUTES="$(awk '{SUM += $1} END {print SUM}' <minutes)"
+# TODO Convert to hours and minutes.
+rm minutes
+
+echo
+echo "## Summary"
+echo
+echo "Billed minutes: $MINUTES"
