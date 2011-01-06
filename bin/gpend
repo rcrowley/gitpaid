@@ -27,4 +27,15 @@ done
 
 gpinit
 
+# Ending work absolutely requires a commit message.
+[ -z "$MESSAGE" ] && {
+	eval "$(git var GIT_EDITOR)" COMMIT_EDITMSG
+	MESSAGE="$(cat COMMIT_EDITMSG 2>/dev/null || true)"
+	rm COMMIT_EDITMSG 2>/dev/null || true
+}
+[ -z "$MESSAGE" ] && {
+	echo "Some sort of commit message is required at the end of work." >&2
+	exit 1
+}
+
 gpcommit "$MESSAGE"
