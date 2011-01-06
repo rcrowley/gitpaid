@@ -27,7 +27,7 @@ gpbegin(1) -- document the beginning of a work session
 * _~/.gitpaid_:
   The default repository for Git Paid data.
 
-## ENVIRONMENT VARIABLES
+## ENVIRONMENT
 
 * `GITPAID_REPO`:
   Override for the default repository.
