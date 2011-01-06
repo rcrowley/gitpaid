@@ -38,3 +38,11 @@ gpcommit() {
 	echo "$COMMIT" >"refs/heads/$BRANCH"
 
 }
+
+gpprettytime() {
+	HOURS="$(($1 / 60))"
+	MINUTES="$(($1 % 60))"
+	# TODO Round (down) to even half hours?
+	[ "$MINUTES" -lt 10 ] && MINUTES="0$MINUTES"
+	echo "$HOURS:$MINUTES"
+}

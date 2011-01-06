@@ -55,18 +55,16 @@ do
 			$(git show "$COMMIT" --pretty=format:%at) - $BEGIN
 		) / 60))"
 		echo "$MINUTES" >&3
-		# TODO Convert to hours and minutes.
-		echo "Billable minutes: $MINUTES"
+		echo "Billed time: $(gpprettytime "$MINUTES")"
 		BEGIN=
 	}
 
 # Sum billable minutes comine from the loop process on file descriptor 3.
 done 3>minutes
 MINUTES="$(awk '{SUM += $1} END {print SUM}' <minutes)"
-# TODO Convert to hours and minutes.
 rm minutes
 
 echo
 echo "## Summary"
 echo
-echo "Billed minutes: $MINUTES"
+echo "Total billed time: $(gpprettytime "$MINUTES")"
