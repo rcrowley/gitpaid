@@ -3,7 +3,7 @@
 set -e
 
 #/ Usage: gpend [-m <message>] [-b <branch>] [-r <repo>]
-#/   -m commit message (default empty)
+#/   -m commit message
 #/   -b branch name (default master)
 #/   -r repository path (default ~/.gitpaid)
 #/   -h show this help message

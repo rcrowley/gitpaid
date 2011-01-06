@@ -1,0 +1,39 @@
+gpinvoice(1) -- generate an invoice
+===================================
+
+## SYNOPSIS
+
+`gpinvoice` [`-b` _branch_] [`-r` _repo_]
+
+## DESCRIPTION
+
+`gpinvoice` prints an invoice in `markdown`(5) format to _stdout_.  The invoice contains the full work log with begin and end times, subtotal billable time, and total billable time.
+
+## OPTIONS
+
+* `-b` _branch_:
+  Branch name (default _master_).
+* `-r` _repo_:
+  Repository path (default _~/.gitpaid_).
+* `-h`:
+  Show a help message.
+
+## FILES
+
+* _~/.gitpaid_:
+  The default repository for Git Paid data.
+
+## ENVIRONMENT VARIABLES
+
+* `GITPAID_REPO`:
+  Override for the default repository.
+* `GITPAID_BRANCH`:
+  Override for the default branch.
+
+## THEME SONG
+
+Notorious B.I.G. - "Mo Money Mo Problems"
+
+## AUTHOR
+
+Richard Crowley <r@rcrowley.org>

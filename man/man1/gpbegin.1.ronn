@@ -1,0 +1,43 @@
+gpbegin(1) -- document the beginning of a work session
+======================================================
+
+## SYNOPSIS
+
+`gpbegin` [`-m` _message_] [`-b` _branch_] [`-r` _repo_]
+
+## DESCRIPTION
+
+`gpbegin` documents the beginning of a work session.  A _message_ is optional and will be included in the invoice if provided.
+
+`gpbegin` may be called several times in succession to augment/update the state of the most recent work session.  `gpinvoice`(1) will not start a new clock on subsequent calls until `gpend`(1) is called.
+
+## OPTIONS
+
+* `-m` _message_:
+  Commit message (default empty).
+* `-b` _branch_:
+  Branch name (default _master_).
+* `-r` _repo_:
+  Repository path (default _~/.gitpaid_).
+* `-h`:
+  Show a help message.
+
+## FILES
+
+* _~/.gitpaid_:
+  The default repository for Git Paid data.
+
+## ENVIRONMENT VARIABLES
+
+* `GITPAID_REPO`:
+  Override for the default repository.
+* `GITPAID_BRANCH`:
+  Override for the default branch.
+
+## THEME SONG
+
+Notorious B.I.G. - "Mo Money Mo Problems"
+
+## AUTHOR
+
+Richard Crowley <r@rcrowley.org>

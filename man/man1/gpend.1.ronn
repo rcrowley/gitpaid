@@ -1,0 +1,43 @@
+gpend(1) -- document the end of a work session
+==============================================
+
+## SYNOPSIS
+
+`gpend` [`-m` _message_] [`-b` _branch_] [`-r` _repo_]
+
+## DESCRIPTION
+
+`gpend` documents the end of a work session.  A _message_ is required and will be taken interactively via `GIT_EDITOR` if one is not given found the arguments.
+
+`gpend` may be called several times in succession to augment/update the state of the most recent work session.  `gpinvoice`(1) will not stop the clock until the final `gpend` commit of a work session.
+
+## OPTIONS
+
+* `-m` _message_:
+  Commit message.
+* `-b` _branch_:
+  Branch name (default _master_).
+* `-r` _repo_:
+  Repository path (default _~/.gitpaid_).
+* `-h`:
+  Show a help message.
+
+## FILES
+
+* _~/.gitpaid_:
+  The default repository for Git Paid data.
+
+## ENVIRONMENT VARIABLES
+
+* `GITPAID_REPO`:
+  Override for the default repository.
+* `GITPAID_BRANCH`:
+  Override for the default branch.
+
+## THEME SONG
+
+Notorious B.I.G. - "Mo Money Mo Problems"
+
+## AUTHOR
+
+Richard Crowley <r@rcrowley.org>
