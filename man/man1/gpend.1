@@ -1,0 +1,56 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GPEND" "1" "January 2011" "" "Git Paid"
+.
+.SH "NAME"
+\fBgpend\fR \- document the end of a work session
+.
+.SH "SYNOPSIS"
+\fBgpend\fR [\fB\-m\fR \fImessage\fR] [\fB\-b\fR \fIbranch\fR] [\fB\-r\fR \fIrepo\fR]
+.
+.SH "DESCRIPTION"
+\fBgpend\fR documents the end of a work session\. A \fImessage\fR is required and will be taken interactively via \fBGIT_EDITOR\fR if one is not given found the arguments\.
+.
+.P
+\fBgpend\fR may be called several times in succession to augment/update the state of the most recent work session\. \fBgpinvoice\fR(1) will not stop the clock until the final \fBgpend\fR commit of a work session\.
+.
+.SH "OPTIONS"
+.
+.TP
+\fB\-m\fR \fImessage\fR
+Commit message\.
+.
+.TP
+\fB\-b\fR \fIbranch\fR
+Branch name (default \fImaster\fR)\.
+.
+.TP
+\fB\-r\fR \fIrepo\fR
+Repository path (default \fI~/\.gitpaid\fR)\.
+.
+.TP
+\fB\-h\fR
+Show a help message\.
+.
+.SH "FILES"
+.
+.TP
+\fI~/\.gitpaid\fR
+The default repository for Git Paid data\.
+.
+.SH "ENVIRONMENT"
+.
+.TP
+\fBGITPAID_REPO\fR
+Override for the default repository\.
+.
+.TP
+\fBGITPAID_BRANCH\fR
+Override for the default branch\.
+.
+.SH "THEME SONG"
+Notorious B\.I\.G\. \- "Mo Money Mo Problems"
+.
+.SH "AUTHOR"
+Richard Crowley \fIr@rcrowley\.org\fR
