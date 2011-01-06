@@ -31,14 +31,35 @@ date
 echo "from $BRANCH branch of $REPO"
 echo
 echo "## Work log"
-git rev-list --reverse --format%H\ %cn%n "$BRANCH" 2>/dev/null \
-	| while read COMMIT COMMITTER
-do
-	[ -z "$COMMIT" ] && continue
 
+gpworkbegin() {
+	echo
+	echo "Began: $(git show "$1" --pretty=format:%aD)"
+}
+
+gpworkend() {
+	echo
+	echo "Ended: $(git show "$1" --pretty=format:%aD)"
+	MINUTES="$((($(git show "$1" --pretty=format:%at) - $BEGIN) / 60))"
+	echo "$MINUTES" >&3
+	echo "Billed time: $(gpprettytime "$MINUTES")"
+}
+
+HEAD="$(git rev-parse "$BRANCH")"
+git rev-list --reverse "$HEAD" | while read COMMIT
+do
+	COMMITTER="$(git show "$COMMIT" --pretty=format:%cn)"
+
+	# End when work has ended at least once and gpbegin is encountered again.
+	[ -n "$ENDED" -a "$COMMITTER" = "gpbegin" ] && {
+		gpworkend "$COMMIT"
+		BEGIN=
+		ENDED=
+	}
+
+	# Begin when work has not already begun and gpbegin is encountered.
 	[ -z "$BEGIN" -a "$COMMITTER" = "gpbegin" ] && {
-		echo
-		echo "Began: $(git show "$COMMIT" --pretty=format:%aD)"
+		gpworkbegin "$COMMIT"
 		BEGIN="$(git show "$COMMIT" --pretty=format:%at)"
 	}
 
@@ -49,16 +70,21 @@ do
 	[ -n "$SUBJECT" -a -n "$BODY" ] && echo ">"
 	[ -n "$BODY" ] && echo "$BODY" | xargs echo ">"
 
-	[ -n "$BEGIN" -a "$COMMITTER" = "gpend" ] && {
-		echo
-		echo "Ended: $(git show "$COMMIT" --pretty=format:%aD)"
-		MINUTES="$(((
-			$(git show "$COMMIT" --pretty=format:%at) - $BEGIN
-		) / 60))"
-		echo "$MINUTES" >&3
-		echo "Billed time: $(gpprettytime "$MINUTES")"
-		BEGIN=
-	}
+	# Note that *an* end has been encountered.  It may not be *the* end.
+	[ -n "$BEGIN" -a "$COMMITTER" = "gpend" ] && ENDED=1 || true
+
+	[ "$HEAD" = "$COMMIT" ] && case "$COMMITTER" in
+
+		# The tip of the branch is necessarily the end if work has ended
+		# and it is an end.
+		gpend) gpworkend "$COMMIT";;
+
+		# The tip of the branch is open if it begins work itself.
+		gpbegin)
+			echo
+			echo "(still in progress)";;
+
+	esac
 
 # Sum billable minutes comine from the loop process on file descriptor 3.
 done 3>minutes
