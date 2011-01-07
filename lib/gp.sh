@@ -26,6 +26,12 @@ gpcommit() {
 	# done.
 	TREE="$(git write-tree)"
 
+	# Override the committer's date with the number of minutes to count for
+	# this work session.
+	[ -n "$2" ] && {
+		export GIT_COMMITTER_DATE="$((1000000000 + $(gpminutes "$2"))) +0000"
+	}
+
 	# Commit the tree with the user's message.
 	PARENT="$(git rev-parse --verify "$BRANCH" 2>/dev/null || true)"
 	[ -z "$PARENT" ] && {
@@ -34,9 +40,23 @@ gpcommit() {
 		COMMIT="$(echo "$1" | git commit-tree "$TREE" -p "$PARENT")"
 	}
 
+	# Clean up after overriding the date.
+	[ -n "$2" ] && unset GIT_COMMITTER_DATE
+
 	# Update the tip of the branch to reference the new commit.
 	echo "$COMMIT" >"refs/heads/$BRANCH"
 
+}
+
+gpminutes() {
+	echo "$1" | grep '^[0-9]*:[0-9][0-9]$' >/dev/null && {
+		HOURS="$(echo "$1" | cut -d: -f1)"
+		MINUTES="$(echo "$1" | cut -d: -f2)"
+	} || {
+		HOURS=0
+		MINUTES="$1"
+	}
+	echo "$((60 * $HOURS + $MINUTES))"
 }
 
 gpprettytime() {

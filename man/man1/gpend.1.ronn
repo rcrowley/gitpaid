@@ -3,7 +3,7 @@ gpend(1) -- document the end of a work session
 
 ## SYNOPSIS
 
-`gpend` [`-m` _message_] [`-b` _branch_] [`-r` _repo_]
+`gpend` [`-m` _message_] [`-t` _time_] [`-b` _branch_] [`-r` _repo_]
 
 ## DESCRIPTION
 
@@ -15,6 +15,8 @@ gpend(1) -- document the end of a work session
 
 * `-m` _message_:
   Commit message.
+* `-t` _time_:
+  Override time spent on this work session.
 * `-b` _branch_:
   Branch name (default _master_).
 * `-r` _repo_:

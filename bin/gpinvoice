@@ -40,9 +40,17 @@ gpworkbegin() {
 gpworkend() {
 	echo
 	echo "Ended: $(git show "$1" --pretty=format:%aD)"
-	MINUTES="$((($(git show "$1" --pretty=format:%at) - $BEGIN) / 60))"
+	AUTHOR_DATE="$(git show "$1" --pretty=format:%at)"
+	COMMITTER_DATE="$(git show "$1" --pretty=format:%ct)"
+	echo "AUTHOR_DATE: $AUTHOR_DATE, COMMITTER_DATE: $COMMITTER_DATE" >&2
+	[ "$AUTHOR_DATE" = "$COMMITTER_DATE" ] && {
+		MINUTES="$((($AUTHOR_DATE - $BEGIN) / 60))"
+		echo "Billed time: $(gpprettytime "$MINUTES")"
+	} || {
+		MINUTES="$(($COMMITTER_DATE - 1000000000))"
+		echo "Billed time (adjusted): $(gpprettytime "$MINUTES")"
+	}
 	echo "$MINUTES" >&3
-	echo "Billed time: $(gpprettytime "$MINUTES")"
 }
 
 HEAD="$(git rev-parse "$BRANCH")"

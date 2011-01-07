@@ -2,18 +2,20 @@
 
 set -e
 
-#/ Usage: gpend [-m <message>] [-b <branch>] [-r <repo>]
+#/ Usage: gpend [-m <message>] [-t <time>] [-b <branch>] [-r <repo>]
 #/   -m commit message
+#/   -t override time spent on this work session
 #/   -b branch name (default master)
 #/   -r repository path (default ~/.gitpaid)
 #/   -h show this help message
 
 . "$(dirname "$(dirname "$0")")/lib/gp.sh"
 
-while getopts m:b:r:h NAME
+while getopts m:t:b:r:h NAME
 do
 	case "$NAME" in
 		m) MESSAGE="$OPTARG";;
+		t) TIME="$OPTARG";;
 		b) BRANCH="$OPTARG";;
 		r) REPO="$OPTARG";;
 		h)
@@ -38,4 +40,4 @@ gpinit
 	exit 1
 }
 
-gpcommit "$MESSAGE"
+gpcommit "$MESSAGE" "$TIME"
