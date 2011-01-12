@@ -59,7 +59,7 @@ do
 
 	# End when work has ended at least once and gpbegin is encountered again.
 	[ -n "$ENDED" -a "$COMMITTER" = "gpbegin" ] && {
-		gpworkend "$COMMIT"
+		gpworkend "$OLDCOMMIT"
 		BEGIN=
 		ENDED=
 	}
@@ -92,6 +92,9 @@ do
 			echo "(still in progress)";;
 
 	esac
+
+	# Keep a reference to the previous commit.
+	OLDCOMMIT="$COMMIT"
 
 # Sum billable minutes comine from the loop process on file descriptor 3.
 done 3>minutes
