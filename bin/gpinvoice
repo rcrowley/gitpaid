@@ -73,9 +73,9 @@ do
 	SUBJECT="$(git show "$COMMIT" --pretty=format:%s)"
 	BODY="$(git show "$COMMIT" --pretty=format:%b)"
 	[ -n "$SUBJECT" -o -n "$BODY" ] && echo
-	[ -n "$SUBJECT" ] && echo "$SUBJECT" | xargs echo ">"
+	[ -n "$SUBJECT" ] && echo -n "$SUBJECT\0" | xargs -0 echo ">"
 	[ -n "$SUBJECT" -a -n "$BODY" ] && echo ">"
-	[ -n "$BODY" ] && echo "$BODY" | xargs echo ">"
+	[ -n "$BODY" ] && echo -n "$BODY\0" | xargs -0 echo ">"
 
 	# Note that *an* end has been encountered.  It may not be *the* end.
 	[ -n "$BEGIN" -a "$COMMITTER" = "gpend" ] && ENDED=1 || true
