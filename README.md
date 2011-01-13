@@ -8,10 +8,12 @@ See [`gpbegin`(1)](http://rcrowley.github.com/gitpaid/gpbegin.1.html), [`gpend`(
 	$ gpbegin -b client-name
 	$ ...
 	$ gpend -b client-name -m "Shaved the yak."
+	$ gpbegin -b client-name
+	$ gpend -b client-name -t 1:45 -m "Faked the time."
 	$ gpinvoice -b client-name
 	# Invoice
 
-	Thu Jan  6 16:27:32 UTC 2011
+	Thu Jan  6 18:27:32 UTC 2011
 	from client-name branch of /home/vagrant/.gitpaid
 
 	## Work log
@@ -23,6 +25,13 @@ See [`gpbegin`(1)](http://rcrowley.github.com/gitpaid/gpbegin.1.html), [`gpend`(
 	Ended: Thu, 6 Jan 2011 17:47:42 +0000
 	Billed time: 1:30
 
+	Began: Thu, 6 Jan 2011 18:27:23 +0000
+
+	> Faked the time.
+
+	Ended: Thu, 6 Jan 2011 18:27:25 +0000
+	Billed time (adjusted): 1:45
+
 	## Summary
 
-	Total billed time: 1:30
+	Total billed time: 3:15
