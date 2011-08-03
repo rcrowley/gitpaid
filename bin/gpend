@@ -2,11 +2,11 @@
 
 set -e
 
-#/ Usage: gpend [-m <message>] [-t <time>] [-b <branch>] [-r <repo>]
-#/   -m commit message
-#/   -t override time spent on this work session
-#/   -b branch name (default master)
+#/ Usage: gpend [-r<repo>] -b<branch> [-t<time>] [-m<message>]
 #/   -r repository path (default ~/.gitpaid)
+#/   -b branch name
+#/   -t override time spent on this work session
+#/   -m commit message
 #/   -h show this help message
 
 . "$(dirname "$(dirname "$0")")/lib/gp.sh"
@@ -18,12 +18,7 @@ do
 		t) TIME="$OPTARG";;
 		b) BRANCH="$OPTARG";;
 		r) REPO="$OPTARG";;
-		h)
-			grep "^#/" <"$0" | cut -c4- >&2
-			exit 0;;
-		*)
-			grep "^#/" <"$0" | head -n1 | cut -c4- >&2
-			exit 1;;
+		*) usage;;
 	esac
 done
 

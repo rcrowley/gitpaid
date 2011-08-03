@@ -2,9 +2,9 @@
 
 set -e
 
-#/ Usage: gpinvoice [-b <branch>] [-r <repo>]
-#/   -b branch name (default master)
+#/ Usage: gpinvoice [-r<repo>] -b<branch>
 #/   -r repository path (default ~/.gitpaid)
+#/   -b branch name
 #/   -h show this help message
 
 . "$(dirname "$(dirname "$0")")/lib/gp.sh"
@@ -14,12 +14,7 @@ do
 	case "$NAME" in
 		b) BRANCH="$OPTARG";;
 		r) REPO="$OPTARG";;
-		h)
-			grep "^#/" <"$0" | cut -c4- >&2
-			exit 0;;
-		*)
-			grep "^#/" <"$0" | head -n1 | cut -c4- >&2
-			exit 1;;
+		*) usage;;
 	esac
 done
 

@@ -1,3 +1,9 @@
+usage() {
+	echo "0: $0" >&2
+	grep "^#/" "$0" | cut -c4- >&2
+	exit 1
+}
+
 # The default repository and branch can be overridden by the environment.
 [ -z "$GITPAID_REPO" ] && REPO="$HOME/.gitpaid" || REPO="$GITPAID_REPO"
 [ -z "$GITPAID_BRANCH" ] && BRANCH="master" || BRANCH="$GITPAID_BRANCH"

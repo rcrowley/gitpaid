@@ -2,10 +2,10 @@
 
 set -e
 
-#/ Usage: gpbegin [-m <message>] [-b <branch>] [-r <repo>]
-#/   -m commit message (default empty)
-#/   -b branch name (default master)
+#/ Usage: gpbegin [-r<repo>] -b<branch> [-m<message>]
 #/   -r repository path (default ~/.gitpaid)
+#/   -b branch name
+#/   -m commit message (default empty)
 #/   -h show this help message
 
 . "$(dirname "$(dirname "$0")")/lib/gp.sh"
@@ -16,12 +16,7 @@ do
 		m) MESSAGE="$OPTARG";;
 		b) BRANCH="$OPTARG";;
 		r) REPO="$OPTARG";;
-		h)
-			grep "^#/" <"$0" | cut -c4- >&2
-			exit 0;;
-		*)
-			grep "^#/" <"$0" | head -n1 | cut -c4- >&2
-			exit 1;;
+		*) usage;;
 	esac
 done
 
