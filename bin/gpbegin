@@ -16,7 +16,7 @@ do
 		m) MESSAGE="$OPTARG";;
 		b) BRANCH="$OPTARG";;
 		r) REPO="$OPTARG";;
-		*) echo 'foo'; usage;;
+		*) usage;;
 	esac
 done
 
