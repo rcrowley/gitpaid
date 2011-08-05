@@ -1,12 +1,11 @@
 usage() {
-	echo "0: $0" >&2
 	grep "^#/" "$0" | cut -c4- >&2
 	exit 1
 }
 
 # The default repository and branch can be overridden by the environment.
 [ -z "$GITPAID_REPO" ] && REPO="$HOME/.gitpaid" || REPO="$GITPAID_REPO"
-[ -z "$GITPAID_BRANCH" ] && usage || BRANCH="$GITPAID_BRANCH"
+[ -z "$GITPAID_BRANCH" ] && BRANCH="" || BRANCH="$GITPAID_BRANCH"
 
 # Overload the committer's name with the name of the program used to make
 # the commit, which will allow tracking begin and end times conveniently.
@@ -16,6 +15,7 @@ export GIT_COMMITTER_EMAIL=""
 
 # Everything's easier when the working directory is the repository.
 gpinit() {
+	[ -z "$BRANCH" ] && usage
 	[ -d "$REPO" ] || {
 		mkdir -p "$REPO"
 		git init --bare "$REPO"
